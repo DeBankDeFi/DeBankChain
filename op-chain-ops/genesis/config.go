@@ -496,6 +496,9 @@ func NewL2StorageConfig(config *DeployConfig, block *types.Block) (state.Storage
 		"symbol":   "WETH",
 		"decimals": 18,
 	}
+	storage["DeployerWhitelist"] = state.StorageValues{
+		"owner": config.ProxyAdminOwner,
+	}
 	if config.EnableGovernance {
 		storage["GovernanceToken"] = state.StorageValues{
 			"_name":   config.GovernanceTokenName,
