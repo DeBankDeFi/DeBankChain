@@ -28,6 +28,7 @@ export const predeploys = {
   BaseFeeVault: '0x4200000000000000000000000000000000000019',
   L1FeeVault: '0x420000000000000000000000000000000000001a',
   DebankL2Register : '0x42000000000000000000000000000000000000bb',
+  DebankMintBurnManager : '0x42000000000000000000000000000000000000ba',
 }
 
 const uint128Max = ethers.BigNumber.from('0xffffffffffffffffffffffffffffffff')

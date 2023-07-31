@@ -59,6 +59,7 @@ func TestBuildOptimism(t *testing.T) {
 		"OptimismMintableERC20Factory":  true,
 		"DeployerWhitelist":             true,
 		"DebankL2Register":              true,
+		"DebankMintBurnManager":         true,
 		"LegacyMessagePasser":           true,
 		"L1BlockNumber":                 true,
 		"L2ERC721Bridge":                true,

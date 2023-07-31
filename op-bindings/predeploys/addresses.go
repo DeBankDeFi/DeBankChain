@@ -43,6 +43,7 @@ var (
 	BaseFeeVaultAddr                  = common.HexToAddress(BaseFeeVault)
 	L1FeeVaultAddr                    = common.HexToAddress(L1FeeVault)
 	DebankL2RegisterAddr              = common.HexToAddress(DebankL2Register)
+	DebankMintBurnManagerAddr         = common.HexToAddress(DebankMintBurnManager)
 
 	Predeploys = make(map[string]*common.Address)
 )

@@ -156,6 +156,11 @@ func checkPredeployConfig(client *ethclient.Client, name string) error {
 				return err
 			}
 
+		case predeploys.DebankMintBurnManagerAddr:
+			if err := checkDebankMintBurnManager(p, client); err != nil {
+				return err
+			}
+
 		case predeploys.L2CrossDomainMessengerAddr:
 			if err := checkL2CrossDomainMessenger(p, client); err != nil {
 				return err
@@ -734,6 +739,19 @@ func checkDebankL2Register(addr common.Address, client *ethclient.Client) error 
 		return err
 	}
 	log.Info("DebankL2Register version", "version", version)
+	return nil
+}
+
+func checkDebankMintBurnManager(addr common.Address, client *ethclient.Client) error {
+	contract, err := bindings.NewDebankMintBurnManager(addr, client)
+	if err != nil {
+		return err
+	}
+	version, err := contract.Version(&bind.CallOpts{})
+	if err != nil {
+		return err
+	}
+	log.Info("DebankMintBurnManager version", "version", version)
 	return nil
 }
 
