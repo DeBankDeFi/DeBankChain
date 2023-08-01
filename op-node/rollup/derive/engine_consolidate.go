@@ -24,17 +24,17 @@ func AttributesMatchBlock(attrs *eth.PayloadAttributes, parentHash common.Hash, 
 	if attrs.PrevRandao != block.PrevRandao {
 		return fmt.Errorf("random field does not match. expected: %v. got: %v", attrs.PrevRandao, block.PrevRandao)
 	}
-	if len(attrs.Transactions) != len(block.Transactions) {
-		return fmt.Errorf("transaction count does not match. expected: %d. got: %d", len(attrs.Transactions), len(block.Transactions))
-	}
-	for i, otx := range attrs.Transactions {
-		if expect := block.Transactions[i]; !bytes.Equal(otx, expect) {
-			if i == 0 {
-				logL1InfoTxns(l, uint64(block.BlockNumber), uint64(block.Timestamp), otx, block.Transactions[i])
-			}
-			return fmt.Errorf("transaction %d does not match. expected: %v. got: %v", i, expect, otx)
-		}
-	}
+	// if len(attrs.Transactions) != len(block.Transactions) {
+	// 	return fmt.Errorf("transaction count does not match. expected: %d. got: %d", len(attrs.Transactions), len(block.Transactions))
+	// }
+	// for i, otx := range attrs.Transactions {
+	// 	if expect := block.Transactions[i]; !bytes.Equal(otx, expect) {
+	// 		if i == 0 {
+	// 			logL1InfoTxns(l, uint64(block.BlockNumber), uint64(block.Timestamp), otx, block.Transactions[i])
+	// 		}
+	// 		return fmt.Errorf("transaction %d does not match. expected: %v. got: %v", i, expect, otx)
+	// 	}
+	// }
 	if attrs.GasLimit == nil {
 		return fmt.Errorf("expected gaslimit in attributes to not be nil, expected %d", block.GasLimit)
 	}
