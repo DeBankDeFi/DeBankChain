@@ -1,7 +1,7 @@
 {
-  "defaultBase": "develop",
+  "defaultBase": "debank",
   "affected": {
-    "defaultBase": "develop"
+    "defaultBase": "debank"
   },
   "implicitDependencies": {
     "nx.json": "*"
@@ -30,7 +30,10 @@
       "{projectRoot}/tsconfig.json",
       "{projectRoot}/package.json"
     ],
-    "default": ["{projectRoot}/**/*", "configsWorkspace"],
+    "default": [
+      "{projectRoot}/**/*",
+      "configsWorkspace"
+    ],
     "srcGenerated": [
       "{projectRoot}/src/contract-artifacts.ts",
       "{projectRoot}/src/contract-deployed-artifacts.ts"
@@ -39,17 +42,34 @@
       "{projectRoot}/src/**/*",
       "!{projectRoot}/src/**/*.spec.ts"
     ],
-    "productionContracts": ["{projectRoot}/contracts/**/*"],
-    "production": ["productionSrc", "productionContracts"],
-    "testing": ["configsWorkspace", "default"]
+    "productionContracts": [
+      "{projectRoot}/contracts/**/*"
+    ],
+    "production": [
+      "productionSrc",
+      "productionContracts"
+    ],
+    "testing": [
+      "configsWorkspace",
+      "default"
+    ]
   },
   "targetDefaults": {
     "lint": {
-      "inputs": ["{workspaceRoot}/.markdownlint.json", "default"]
+      "inputs": [
+        "{workspaceRoot}/.markdownlint.json",
+        "default"
+      ]
     },
     "test": {
-      "inputs": ["default", "testing", "^production"],
-      "dependsOn": ["^build"]
+      "inputs": [
+        "default",
+        "testing",
+        "^production"
+      ],
+      "dependsOn": [
+        "^build"
+      ]
     },
     "build:contracts": {
       "inputs": [
@@ -57,8 +77,13 @@
         "productionContracts",
         "^productionContracts"
       ],
-      "dependsOn": ["^build"],
-      "outputs": ["{projectRoot}/artifacts", "{projectRoot}/forge-artifacts"]
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "{projectRoot}/artifacts",
+        "{projectRoot}/forge-artifacts"
+      ]
     },
     "build": {
       "inputs": [
@@ -67,8 +92,13 @@
         "production",
         "^production"
       ],
-      "dependsOn": ["^build", "build:contracts"],
-      "outputs": ["{projectRoot}/dist"]
+      "dependsOn": [
+        "^build",
+        "build:contracts"
+      ],
+      "outputs": [
+        "{projectRoot}/dist"
+      ]
     }
   }
 }

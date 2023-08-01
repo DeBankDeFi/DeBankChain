@@ -122,6 +122,12 @@ func BuildOptimism(immutable ImmutableConfig) (DeploymentResults, error) {
 			Name: "DeployerWhitelist",
 		},
 		{
+			Name: "DebankL2Register",
+		},
+		{
+			Name: "DebankMintBurnManager",
+		},
+		{
 			Name: "LegacyMessagePasser",
 		},
 		{
@@ -212,6 +218,10 @@ func l2Deployer(backend *backends.SimulatedBackend, opts *bind.TransactOpts, dep
 		_, tx, _, err = bindings.DeployOptimismMintableERC20Factory(opts, backend, predeploys.L2StandardBridgeAddr)
 	case "DeployerWhitelist":
 		_, tx, _, err = bindings.DeployDeployerWhitelist(opts, backend)
+	case "DebankL2Register":
+		_, tx, _, err = bindings.DeployDebankL2Register(opts, backend)
+	case "DebankMintBurnManager":
+		_, tx, _, err = bindings.DeployDebankMintBurnManager(opts, backend)
 	case "LegacyMessagePasser":
 		_, tx, _, err = bindings.DeployLegacyMessagePasser(opts, backend)
 	case "L1BlockNumber":

@@ -218,7 +218,7 @@ func RandomBlock(rng *rand.Rand, txCount uint64) (*types.Block, []*types.Receipt
 // number of transactions is len(ptxs) + txCount.
 func RandomBlockPrependTxs(rng *rand.Rand, txCount int, ptxs ...*types.Transaction) (*types.Block, []*types.Receipt) {
 	header := RandomHeader(rng)
-	signer := types.NewLondonSigner(big.NewInt(rng.Int63n(1000)))
+	signer := types.NewLondonSigner(big.NewInt(rng.Int63n(1000)), nil)
 	txs := make([]*types.Transaction, 0, txCount+len(ptxs))
 	txs = append(txs, ptxs...)
 	for i := 0; i < txCount; i++ {

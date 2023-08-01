@@ -100,6 +100,8 @@ export const DEFAULT_L2_CONTRACT_ADDRESSES: OEL2ContractsLike = {
   OVM_SequencerFeeVault: predeploys.SequencerFeeVault,
   WETH: predeploys.WETH9,
   BedrockMessagePasser: predeploys.L2ToL1MessagePasser,
+  OVM_DebankL2Register: predeploys.DebankL2Register,
+  OVM_DebankMintBurnManager: predeploys.DebankMintBurnManager,
 }
 
 /**

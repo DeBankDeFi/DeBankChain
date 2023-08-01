@@ -1,0 +1,6 @@
+
+FROM ubuntu:23.04
+
+COPY op-proposer/bin/op-proposer /usr/local/bin
+
+CMD ["op-proposer"]

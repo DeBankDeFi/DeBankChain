@@ -151,6 +151,16 @@ func checkPredeployConfig(client *ethclient.Client, name string) error {
 				return err
 			}
 
+		case predeploys.DebankL2RegisterAddr:
+			if err := checkDebankL2Register(p, client); err != nil {
+				return err
+			}
+
+		case predeploys.DebankMintBurnManagerAddr:
+			if err := checkDebankMintBurnManager(p, client); err != nil {
+				return err
+			}
+
 		case predeploys.L2CrossDomainMessengerAddr:
 			if err := checkL2CrossDomainMessenger(p, client); err != nil {
 				return err
@@ -709,6 +719,39 @@ func checkDeployerWhitelist(addr common.Address, client *ethclient.Client) error
 		return err
 	}
 	log.Info("DeployerWhitelist version", "version", version)
+	return nil
+}
+
+func checkDebankL2Register(addr common.Address, client *ethclient.Client) error {
+	contract, err := bindings.NewDebankL2Register(addr, client)
+	if err != nil {
+		return err
+	}
+	owner, err := contract.Owner(&bind.CallOpts{})
+	if err != nil {
+		return err
+	}
+	if owner != (common.Address{}) {
+		return fmt.Errorf("DebankL2Register owner should be set to address(0)")
+	}
+	version, err := contract.Version(&bind.CallOpts{})
+	if err != nil {
+		return err
+	}
+	log.Info("DebankL2Register version", "version", version)
+	return nil
+}
+
+func checkDebankMintBurnManager(addr common.Address, client *ethclient.Client) error {
+	contract, err := bindings.NewDebankMintBurnManager(addr, client)
+	if err != nil {
+		return err
+	}
+	version, err := contract.Version(&bind.CallOpts{})
+	if err != nil {
+		return err
+	}
+	log.Info("DebankMintBurnManager version", "version", version)
 	return nil
 }
 

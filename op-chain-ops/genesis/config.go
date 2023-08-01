@@ -499,6 +499,12 @@ func NewL2StorageConfig(config *DeployConfig, block *types.Block) (state.Storage
 	storage["DeployerWhitelist"] = state.StorageValues{
 		"owner": config.ProxyAdminOwner,
 	}
+	storage["DebankL2Register"] = state.StorageValues{
+		"owner": config.ProxyAdminOwner,
+	}
+	storage["DebankMintBurnManager"] = state.StorageValues{
+		"owner": config.ProxyAdminOwner,
+	}
 	if config.EnableGovernance {
 		storage["GovernanceToken"] = state.StorageValues{
 			"_name":   config.GovernanceTokenName,

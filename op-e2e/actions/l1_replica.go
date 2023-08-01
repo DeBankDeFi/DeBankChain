@@ -84,7 +84,7 @@ func NewL1Replica(t Testing, log log.Logger, genesis *core.Genesis) *L1Replica {
 		l1Chain:    backend.BlockChain(),
 		l1Database: backend.ChainDb(),
 		l1Cfg:      genesis,
-		l1Signer:   types.LatestSigner(genesis.Config),
+		l1Signer:   types.LatestSigner(genesis.Config, nil),
 		failL1RPC:  nil,
 	}
 }

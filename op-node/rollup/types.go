@@ -248,7 +248,7 @@ func (cfg *Config) Check() error {
 }
 
 func (c *Config) L1Signer() types.Signer {
-	return types.NewLondonSigner(c.L1ChainID)
+	return types.NewLondonSigner(c.L1ChainID, nil)
 }
 
 // IsRegolith returns true if the Regolith hardfork is active at or past the given timestamp.

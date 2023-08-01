@@ -15,6 +15,10 @@ github.com/CloudyKit/fastprinter v0.0.0-20200109182630-33d98a066a53/go.mod h1:+3
 github.com/CloudyKit/jet/v3 v3.0.0/go.mod h1:HKQPgSJmdK8hdoAbKUUWajkHyHo4RaU5rMdUywE7VMo=
 github.com/DataDog/zstd v1.5.2 h1:vUG4lAyuPCXO0TLbXvPv7EB7cNK1QV/luu55UHLrrn8=
 github.com/DataDog/zstd v1.5.2/go.mod h1:g4AWEaM3yOg3HYfnJ3YIawPnVdXJh9QME85blwSAmyw=
+github.com/DeBankDeFi/etherlib v0.2.7 h1:Yk3v2VlT22ifM/ARLT3HNtxMhIoKSWON47TzhYVkQkc=
+github.com/DeBankDeFi/etherlib v0.2.7/go.mod h1:Q/pkoKm4oZu9UOhLm07Zg7sxXvnLI3GdOoK4bE2t+xI=
+github.com/DeBankDeFi/op-geth v1.101106.0-debankchain-1 h1:R6GsO74nx1/Zm6YR1P6eh+2Fh0vXeCVuTxsZ5av+f1k=
+github.com/DeBankDeFi/op-geth v1.101106.0-debankchain-1/go.mod h1:4Y3TOS/QrrDy2I6Gvw9mcE/d6F8a3hIO5TMzA61jqnw=
 github.com/Joker/hpp v1.0.0/go.mod h1:8x5n+M1Hp5hC0g8okX3sR3vFQwynaX/UgSOM9MeBKzY=
 github.com/Shopify/goreferrer v0.0.0-20181106222321-ec9c9a553398/go.mod h1:a1uqRtAwp2Xwc6WNPJEufxJ7fx3npB4UV/JOLmbu5I0=
 github.com/VictoriaMetrics/fastcache v1.10.0 h1:5hDJnLsKLpnUEToub7ETuRu8RCkb40woBZAUiKonXzY=
@@ -142,8 +146,6 @@ github.com/envoyproxy/protoc-gen-validate v0.1.0/go.mod h1:iSmxcyjqTsJpI2R4NaDN7
 github.com/etcd-io/bbolt v1.3.3/go.mod h1:ZF2nL25h33cCyBtcyWeZ2/I3HQOfTP+0PIEvHjkjCrw=
 github.com/ethereum-optimism/go-ethereum-hdwallet v0.1.3 h1:RWHKLhCrQThMfch+QJ1Z8veEq5ZO3DfIhZ7xgRP9WTc=
 github.com/ethereum-optimism/go-ethereum-hdwallet v0.1.3/go.mod h1:QziizLAiF0KqyLdNJYD7O5cpDlaFMNZzlxYNcWsJUxs=
-github.com/ethereum-optimism/op-geth v1.101106.0-rc.2 h1:F3SGS0XIvRQ0MjL3Rzbx3A688hNsqv/DtdlBnZimFTw=
-github.com/ethereum-optimism/op-geth v1.101106.0-rc.2/go.mod h1:X9t7oeerFMU9/zMIjZKT/jbIca+O05QqtBTLjL+XVeA=
 github.com/fasthttp-contrib/websocket v0.0.0-20160511215533-1f3b11f56072/go.mod h1:duJ4Jxv5lDcvg4QuQr0oowTf7dz4/CR8NtyCooz9HL8=
 github.com/fatih/structs v1.1.0/go.mod h1:9NiDSp5zOcgEDl+j00MP/WkGVPOlPRLejGD8Ga6PJ7M=
 github.com/felixge/fgprof v0.9.3 h1:VvyZxILNuCiUCSXtPtYmmtGvb65nqXh2QFWc0Wpf2/g=

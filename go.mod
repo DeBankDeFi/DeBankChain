@@ -40,6 +40,7 @@ require (
 
 require (
 	github.com/DataDog/zstd v1.5.2 // indirect
+	github.com/DeBankDeFi/etherlib v0.2.7 // indirect
 	github.com/VictoriaMetrics/fastcache v1.10.0 // indirect
 	github.com/allegro/bigcache v1.2.1 // indirect
 	github.com/benbjohnson/clock v1.3.0 // indirect
@@ -178,6 +179,6 @@ require (
 	nhooyr.io/websocket v1.8.7 // indirect
 )
 
-replace github.com/ethereum/go-ethereum v1.11.6 => github.com/ethereum-optimism/op-geth v1.101106.0-rc.2
+replace github.com/ethereum/go-ethereum v1.11.6 => github.com/DeBankDeFi/op-geth v1.101106.0-debankchain-1
 
 //replace github.com/ethereum/go-ethereum v1.11.6 => ../go-ethereum

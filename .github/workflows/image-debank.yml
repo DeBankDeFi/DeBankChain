@@ -1,0 +1,123 @@
+name: "Build Docker Image"
+
+on:
+  pull_request:
+    branches:
+      - 'debank'
+  workflow_dispatch:
+env:
+  REGISTRY: 294354037686.dkr.ecr.ap-northeast-1.amazonaws.com
+  IMAGE: blockchain-dbk
+
+jobs:
+  build-op-node:
+    runs-on: [self-hosted, linux]
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.20.x
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: tibdex/github-app-token@v1
+        id: generate-token
+        with:
+          app_id: ${{ secrets.RELEASE_MANAGER_APP_ID }}
+          private_key: ${{ secrets.RELEASE_MANAGER_APP_SECRET }}
+
+      - name: Set env
+        run: |
+          echo "REVISION=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Build
+        run: |
+          make op-node VERSION=${{ env.REVISION }} GOOS=linux GOARCH=amd64
+
+      - name: Build image and push to ECR
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./op-node/Dockerfile.debank
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE }}:op-node-${{ env.REVISION }}
+          build-args: |
+            VERSION=${{ env.REVISION }}
+
+
+  build-op-batcher:
+    runs-on: [self-hosted, linux]
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.20.x
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: tibdex/github-app-token@v1
+        id: generate-token
+        with:
+          app_id: ${{ secrets.RELEASE_MANAGER_APP_ID }}
+          private_key: ${{ secrets.RELEASE_MANAGER_APP_SECRET }}
+
+      - name: Set env
+        run: |
+          echo "REVISION=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Build
+        run: |
+          make op-batcher VERSION=${{ env.REVISION }} GOOS=linux GOARCH=amd64
+
+      - name: Build image and push to ECR
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./op-batcher/Dockerfile.debank
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE }}:op-batcher-${{ env.REVISION }}
+          build-args: |
+            VERSION=${{ env.REVISION }}
+
+  build-op-proposer:
+    runs-on: [self-hosted, linux]
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.20.x
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: tibdex/github-app-token@v1
+        id: generate-token
+        with:
+          app_id: ${{ secrets.RELEASE_MANAGER_APP_ID }}
+          private_key: ${{ secrets.RELEASE_MANAGER_APP_SECRET }}
+
+      - name: Set env
+        run: |
+          echo "REVISION=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Build
+        run: |
+          make op-proposer VERSION=${{ env.REVISION }} GOOS=linux GOARCH=amd64
+
+      - name: Build image and push to ECR
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./op-proposer/Dockerfile.debank
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE }}:op-proposer-${{ env.REVISION }}
+          build-args: |
+            VERSION=${{ env.REVISION }}

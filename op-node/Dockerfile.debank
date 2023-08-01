@@ -1,0 +1,6 @@
+
+FROM ubuntu:23.04
+
+COPY op-node/bin/op-node /usr/local/bin
+
+CMD ["op-node"]

@@ -64,6 +64,8 @@ export interface OEL2Contracts {
   OVM_SequencerFeeVault: Contract
   WETH: Contract
   BedrockMessagePasser: Contract
+  OVM_DebankL2Register: Contract
+  OVM_DebankMintBurnManager: Contract
 }
 
 /**

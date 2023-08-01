@@ -1,0 +1,6 @@
+
+FROM ubuntu:23.04
+
+COPY op-batcher/bin/op-batcher /usr/local/bin
+
+CMD ["op-batcher"]
