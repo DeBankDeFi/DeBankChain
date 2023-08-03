@@ -378,10 +378,10 @@ func (n *OpNode) RequestL2Range(ctx context.Context, start, end eth.L2BlockRef) 
 		return n.rpcSync.RequestL2Range(ctx, start, end)
 	}
 	if n.p2pNode != nil && n.p2pNode.AltSyncEnabled() {
-		if unixTimeStale(start.Time, 12*time.Hour) {
-			n.log.Debug("ignoring request to sync L2 range, timestamp is too old for p2p", "start", start, "end", end, "start_time", start.Time)
-			return nil
-		}
+		// if unixTimeStale(start.Time, 12*time.Hour) {
+		// 	n.log.Debug("ignoring request to sync L2 range, timestamp is too old for p2p", "start", start, "end", end, "start_time", start.Time)
+		// 	return nil
+		// }
 		return n.p2pNode.RequestL2Range(ctx, start, end)
 	}
 	n.log.Debug("ignoring request to sync L2 range, no sync method available", "start", start, "end", end)
