@@ -46,7 +46,7 @@ func CheckBatch(cfg *rollup.Config, log log.Logger, l1Blocks []eth.L1BlockRef, l
 
 	nextTimestamp := l2SafeHead.Time + cfg.BlockTime
 	if batch.Batch.Timestamp > nextTimestamp {
-		log.Trace("received out-of-order batch for future processing after next batch", "next_timestamp", nextTimestamp)
+		log.Warn("received out-of-order batch for future processing after next batch", "next_timestamp", nextTimestamp)
 		return BatchFuture
 	}
 	if batch.Batch.Timestamp < nextTimestamp {

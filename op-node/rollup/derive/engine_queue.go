@@ -176,7 +176,7 @@ func (eq *EngineQueue) AddUnsafePayload(payload *eth.ExecutionPayload) {
 	}
 	p := eq.unsafePayloads.Peek()
 	eq.metrics.RecordUnsafePayloadsBuffer(uint64(eq.unsafePayloads.Len()), eq.unsafePayloads.MemSize(), p.ID())
-	eq.log.Trace("Next unsafe payload to process", "next", p.ID(), "timestamp", uint64(p.Timestamp))
+	eq.log.Debug("Next unsafe payload to process", "next", p.ID(), "timestamp", uint64(p.Timestamp))
 }
 
 func (eq *EngineQueue) Finalize(l1Origin eth.L1BlockRef) {
@@ -477,7 +477,7 @@ func (eq *EngineQueue) tryNextUnsafePayload(ctx context.Context) error {
 	eq.unsafeHead = ref
 	eq.unsafePayloads.Pop()
 	eq.metrics.RecordL2Ref("l2_unsafe", ref)
-	eq.log.Trace("Executed unsafe payload", "hash", ref.Hash, "number", ref.Number, "timestamp", ref.Time, "l1Origin", ref.L1Origin)
+	eq.log.Debug("Executed unsafe payload", "hash", ref.Hash, "number", ref.Number, "timestamp", ref.Time, "l1Origin", ref.L1Origin)
 	eq.logSyncProgress("unsafe payload from sequencer")
 
 	return nil
@@ -502,10 +502,13 @@ func (eq *EngineQueue) tryNextSafeAttributes(ctx context.Context) error {
 			eq.safeHead, eq.safeHead.ParentID(), eq.safeAttributes.parent))
 
 	}
+
 	if eq.safeHead.Number < eq.unsafeHead.Number {
 		return eq.consolidateNextSafeAttributes(ctx)
 	} else if eq.safeHead.Number == eq.unsafeHead.Number {
-		return eq.forceNextSafeAttributes(ctx)
+		eq.log.Info("safe head is equal to unsafe head",
+			"safe_head", eq.safeHead, "safe_head_parent", eq.safeHead.ParentID(), "attributes_parent", eq.safeAttributes.parent)
+		//return eq.forceNextSafeAttributes(ctx)
 	} else {
 		// For some reason the unsafe head is behind the safe head. Log it, and correct it.
 		eq.log.Error("invalid sync state, unsafe head is behind safe head", "unsafe", eq.unsafeHead, "safe", eq.safeHead)
