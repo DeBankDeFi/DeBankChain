@@ -78,4 +78,5 @@ func init() {
 	Predeploys["BaseFeeVault"] = &BaseFeeVaultAddr
 	Predeploys["L1FeeVault"] = &L1FeeVaultAddr
 	Predeploys["DebankL2Register"] = &DebankL2RegisterAddr
+	Predeploys["DebankMintBurnManager"] = &DebankMintBurnManagerAddr
 }
