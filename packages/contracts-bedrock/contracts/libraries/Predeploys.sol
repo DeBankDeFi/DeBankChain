@@ -74,4 +74,7 @@ library Predeploys {
 
     /// @notice Address of the DebankL2Register predeploy.
     address internal constant DEBANKL2REGISTER = 0x42000000000000000000000000000000000000Bb;
+
+    /// @notice Address of the DebankMintBurnManager predeploy.
+    address internal constant DEBANKMINTBURNMANAGR = 0x42000000000000000000000000000000000000bA;
 }

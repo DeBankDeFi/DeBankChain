@@ -32,5 +32,6 @@
   "CrossDomainMessenger",
   "MIPS",
   "PreimageOracle",
-  "DebankL2Register"
+  "DebankL2Register",
+  "DebankMintBurnManager"
 ]
