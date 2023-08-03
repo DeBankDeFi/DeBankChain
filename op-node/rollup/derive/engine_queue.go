@@ -509,6 +509,7 @@ func (eq *EngineQueue) tryNextSafeAttributes(ctx context.Context) error {
 		eq.log.Info("safe head is equal to unsafe head",
 			"safe_head", eq.safeHead, "safe_head_parent", eq.safeHead.ParentID(), "attributes_parent", eq.safeAttributes.parent)
 		//return eq.forceNextSafeAttributes(ctx)
+		return nil
 	} else {
 		// For some reason the unsafe head is behind the safe head. Log it, and correct it.
 		eq.log.Error("invalid sync state, unsafe head is behind safe head", "unsafe", eq.unsafeHead, "safe", eq.safeHead)
