@@ -423,13 +423,13 @@ func (eq *EngineQueue) tryNextUnsafePayload(ctx context.Context) error {
 
 	// Ensure that the unsafe payload builds upon the current unsafe head
 	// TODO: once we support snap-sync we can remove this condition, and handle the "SYNCING" status of the execution engine.
-	if first.ParentHash != eq.unsafeHead.Hash {
-		if uint64(first.BlockNumber) == eq.unsafeHead.Number+1 {
-			eq.log.Info("skipping unsafe payload, since it does not build onto the existing unsafe chain", "safe", eq.safeHead.ID(), "unsafe", first.ID(), "payload", first.ID())
-			eq.unsafePayloads.Pop()
-		}
-		return io.EOF // time to go to next stage if we cannot process the first unsafe payload
-	}
+	// if first.ParentHash != eq.unsafeHead.Hash {
+	// 	if uint64(first.BlockNumber) == eq.unsafeHead.Number+1 {
+	// 		eq.log.Info("skipping unsafe payload, since it does not build onto the existing unsafe chain", "safe", eq.safeHead.ID(), "unsafe", first.ID(), "payload", first.ID())
+	// 		eq.unsafePayloads.Pop()
+	// 	}
+	// 	return io.EOF // time to go to next stage if we cannot process the first unsafe payload
+	// }
 
 	ref, err := PayloadToBlockRef(first, &eq.cfg.Genesis)
 	if err != nil {
@@ -442,7 +442,7 @@ func (eq *EngineQueue) tryNextUnsafePayload(ctx context.Context) error {
 	if err != nil {
 		return NewTemporaryError(fmt.Errorf("failed to update insert payload: %w", err))
 	}
-	if status.Status != eth.ExecutionValid {
+	if status.Status != eth.ExecutionValid && status.Status != eth.ExecutionSyncing && status.Status != eth.ExecutionAccepted {
 		eq.unsafePayloads.Pop()
 		return NewTemporaryError(fmt.Errorf("cannot process unsafe payload: new - %v; parent: %v; err: %w",
 			first.ID(), first.ParentID(), eth.NewPayloadErr(first, status)))
@@ -468,7 +468,7 @@ func (eq *EngineQueue) tryNextUnsafePayload(ctx context.Context) error {
 			return NewTemporaryError(fmt.Errorf("failed to update forkchoice to prepare for new unsafe payload: %w", err))
 		}
 	}
-	if fcRes.PayloadStatus.Status != eth.ExecutionValid {
+	if fcRes.PayloadStatus.Status != eth.ExecutionValid && status.Status != eth.ExecutionSyncing {
 		eq.unsafePayloads.Pop()
 		return NewTemporaryError(fmt.Errorf("cannot prepare unsafe chain for new payload: new - %v; parent: %v; err: %w",
 			first.ID(), first.ParentID(), eth.ForkchoiceUpdateErr(fcRes.PayloadStatus)))
