@@ -217,10 +217,12 @@ batchLoop:
 		return nextBatch.Batch, nil
 	}
 
+	return nil, io.EOF
+
 	// If the current epoch is too old compared to the L1 block we are at,
 	// i.e. if the sequence window expired, we create empty batches for the current epoch
 	expiryEpoch := epoch.Number + bq.config.SeqWindowSize
-	forceEmptyBatches := (expiryEpoch == bq.origin.Number && outOfData) || expiryEpoch < bq.origin.Number
+	forceEmptyBatches := false // (expiryEpoch == bq.origin.Number && outOfData) || expiryEpoch < bq.origin.Number
 	firstOfEpoch := epoch.Number == l2SafeHead.L1Origin.Number+1
 
 	bq.log.Debug("Potentially generating an empty batch",

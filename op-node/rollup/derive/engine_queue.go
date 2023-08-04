@@ -223,11 +223,17 @@ func (eq *EngineQueue) SafeL2Head() eth.L2BlockRef {
 
 func (eq *EngineQueue) Step(ctx context.Context) error {
 	if eq.needForkchoiceUpdate {
-		return eq.tryUpdateEngine(ctx)
+		eq.tryUpdateEngine(ctx)
 	}
+
+	if eq.unsafePayloads.Len() > 0 {
+		eq.tryNextUnsafePayload(ctx)
+	}
+
 	if eq.safeAttributes != nil {
 		return eq.tryNextSafeAttributes(ctx)
 	}
+
 	outOfData := false
 	newOrigin := eq.prev.Origin()
 	// Check if the L2 unsafe head origin is consistent with the new origin
@@ -251,10 +257,6 @@ func (eq *EngineQueue) Step(ctx context.Context) error {
 		}
 		eq.log.Debug("Adding next safe attributes", "safe_head", eq.safeHead, "next", next)
 		return NotEnoughData
-	}
-
-	if eq.unsafePayloads.Len() > 0 {
-		return eq.tryNextUnsafePayload(ctx)
 	}
 
 	if outOfData {
@@ -414,18 +416,24 @@ func (eq *EngineQueue) tryUpdateEngine(ctx context.Context) error {
 
 func (eq *EngineQueue) tryNextUnsafePayload(ctx context.Context) error {
 	first := eq.unsafePayloads.Peek()
+	for first != nil && uint64(first.BlockNumber) <= eq.unsafeHead.Number {
+		eq.log.Info("skip old payload", "safe", eq.safeHead.ID(), "unsafe", eq.unsafeHead.ID(), "payload", first.ID())
 
-	if uint64(first.BlockNumber) <= eq.safeHead.Number {
-		eq.log.Info("skipping unsafe payload, since it is older than safe head", "safe", eq.safeHead.ID(), "unsafe", first.ID(), "payload", first.ID())
 		eq.unsafePayloads.Pop()
-		return nil
+		first = eq.unsafePayloads.Peek()
+	}
+
+	if first == nil || uint64(first.BlockNumber) > eq.unsafeHead.Number+1 {
+		// TODO trigger a resync of the missing unsafe blocks
+		return io.EOF
 	}
 
 	// Ensure that the unsafe payload builds upon the current unsafe head
-	// TODO: once we support snap-sync we can remove this condition, and handle the "SYNCING" status of the execution engine.
 	// if first.ParentHash != eq.unsafeHead.Hash {
+	// 	// potential reorg is occuring, use safeHead for double check
+	// 	eq.log.Info("skipping unsafe payload, since it does not build onto the existing unsafe chain", "safe", eq.safeHead.ID(), "unsafe", first.ID(), "payload", first.ID())
+	// 	// TODO trigger a resync of eq.unsafeHead again
 	// 	if uint64(first.BlockNumber) == eq.unsafeHead.Number+1 {
-	// 		eq.log.Info("skipping unsafe payload, since it does not build onto the existing unsafe chain", "safe", eq.safeHead.ID(), "unsafe", first.ID(), "payload", first.ID())
 	// 		eq.unsafePayloads.Pop()
 	// 	}
 	// 	return io.EOF // time to go to next stage if we cannot process the first unsafe payload
@@ -439,43 +447,41 @@ func (eq *EngineQueue) tryNextUnsafePayload(ctx context.Context) error {
 	}
 
 	status, err := eq.engine.NewPayload(ctx, first)
-	if err != nil {
-		return NewTemporaryError(fmt.Errorf("failed to update insert payload: %w", err))
-	}
-	if status.Status != eth.ExecutionValid && status.Status != eth.ExecutionSyncing && status.Status != eth.ExecutionAccepted {
+	if err != nil || status.Status == eth.ExecutionInvalid {
 		eq.unsafePayloads.Pop()
 		return NewTemporaryError(fmt.Errorf("cannot process unsafe payload: new - %v; parent: %v; err: %w",
 			first.ID(), first.ParentID(), eth.NewPayloadErr(first, status)))
 	}
 
 	// Mark the new payload as valid
-	fc := eth.ForkchoiceState{
-		HeadBlockHash:      first.BlockHash,
-		SafeBlockHash:      eq.safeHead.Hash, // this should guarantee we do not reorg past the safe head
-		FinalizedBlockHash: eq.finalized.Hash,
-	}
-	fcRes, err := eq.engine.ForkchoiceUpdate(ctx, &fc, nil)
-	if err != nil {
-		var inputErr eth.InputError
-		if errors.As(err, &inputErr) {
-			switch inputErr.Code {
-			case eth.InvalidForkchoiceState:
-				return NewResetError(fmt.Errorf("pre-unsafe-block forkchoice update was inconsistent with engine, need reset to resolve: %w", inputErr.Unwrap()))
-			default:
-				return NewTemporaryError(fmt.Errorf("unexpected error code in forkchoice-updated response: %w", err))
-			}
-		} else {
-			return NewTemporaryError(fmt.Errorf("failed to update forkchoice to prepare for new unsafe payload: %w", err))
-		}
-	}
-	if fcRes.PayloadStatus.Status != eth.ExecutionValid && status.Status != eth.ExecutionSyncing {
-		eq.unsafePayloads.Pop()
-		return NewTemporaryError(fmt.Errorf("cannot prepare unsafe chain for new payload: new - %v; parent: %v; err: %w",
-			first.ID(), first.ParentID(), eth.ForkchoiceUpdateErr(fcRes.PayloadStatus)))
-	}
+	// fc := eth.ForkchoiceState{
+	// 	HeadBlockHash:      first.BlockHash,
+	// 	SafeBlockHash:      eq.safeHead.Hash, // this should guarantee we do not reorg past the safe head
+	// 	FinalizedBlockHash: eq.finalized.Hash,
+	// }
+	// fcRes, err := eq.engine.ForkchoiceUpdate(ctx, &fc, nil)
+	// if err != nil {
+	// 	var inputErr eth.InputError
+	// 	if errors.As(err, &inputErr) {
+	// 		switch inputErr.Code {
+	// 		case eth.InvalidForkchoiceState:
+	// 			return NewResetError(fmt.Errorf("pre-unsafe-block forkchoice update was inconsistent with engine, need reset to resolve: %w", inputErr.Unwrap()))
+	// 		default:
+	// 			return NewTemporaryError(fmt.Errorf("unexpected error code in forkchoice-updated response: %w", err))
+	// 		}
+	// 	} else {
+	// 		return NewTemporaryError(fmt.Errorf("failed to update forkchoice to prepare for new unsafe payload: %w", err))
+	// 	}
+	// }
+	// if fcRes.PayloadStatus.Status != eth.ExecutionValid && status.Status != eth.ExecutionSyncing {
+	// 	eq.unsafePayloads.Pop()
+	// 	return NewTemporaryError(fmt.Errorf("cannot prepare unsafe chain for new payload: new - %v; parent: %v; err: %w",
+	// 		first.ID(), first.ParentID(), eth.ForkchoiceUpdateErr(fcRes.PayloadStatus)))
+	// }
 
 	eq.unsafeHead = ref
 	eq.unsafePayloads.Pop()
+
 	eq.metrics.RecordL2Ref("l2_unsafe", ref)
 	eq.log.Debug("Executed unsafe payload", "hash", ref.Hash, "number", ref.Number, "timestamp", ref.Time, "l1Origin", ref.L1Origin)
 	eq.logSyncProgress("unsafe payload from sequencer")
@@ -512,7 +518,7 @@ func (eq *EngineQueue) tryNextSafeAttributes(ctx context.Context) error {
 		return NewTemporaryError(fmt.Errorf("failed to get existing unsafe payload to compare against derived attributes from L1: %w", err))
 	}
 
-	if (eq.safeAttributes.attributes.BlockHash != common.Hash{}) && eq.safeAttributes.attributes.BlockHash != payload.BlockHash {
+	if eq.safeAttributes.attributes.BlockHash != payload.BlockHash {
 		eq.log.Warn("L2 reorg: existing unsafe block does not match derived attributes from L1", "l2 block number", payload.BlockNumber, "l2 block hash", payload.BlockHash, "derived hash", eq.safeAttributes.attributes.BlockHash, "derived timestamp", eq.safeAttributes.attributes.Timestamp, "engine unsafe", eq.unsafeHead, "engine safe", eq.safeHead)
 		return NewResetError(fmt.Errorf("existing unsafe block does not match derived attributes from L1"))
 	}
