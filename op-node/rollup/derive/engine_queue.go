@@ -513,7 +513,7 @@ func (eq *EngineQueue) tryNextSafeAttributes(ctx context.Context) error {
 	}
 
 	if eq.safeAttributes.attributes.BlockHash != payload.BlockHash {
-		eq.log.Warn("L2 reorg: existing unsafe block does not match derived attributes from L1", "unsafe", eq.unsafeHead, "safe", eq.safeHead)
+		eq.log.Warn("L2 reorg: existing unsafe block does not match derived attributes from L1", "l2 block number", payload.BlockNumber, "l2 block hash", payload.BlockHash, "derived hash", eq.safeAttributes.attributes.BlockHash, "derived timestamp", eq.safeAttributes.attributes.Timestamp, "engine unsafe", eq.unsafeHead, "engine safe", eq.safeHead)
 		return NewResetError(fmt.Errorf("existing unsafe block does not match derived attributes from L1"))
 	}
 
