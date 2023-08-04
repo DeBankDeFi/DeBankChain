@@ -241,6 +241,7 @@ func BlockToBatch(block *types.Block) (*BatchData, L1BlockInfo, error) {
 	return &BatchData{
 		BatchV1{
 			ParentHash:   block.ParentHash(),
+			Hash: block.Hash(),
 			EpochNum:     rollup.Epoch(l1Info.Number),
 			EpochHash:    l1Info.BlockHash,
 			Timestamp:    block.Time(),
