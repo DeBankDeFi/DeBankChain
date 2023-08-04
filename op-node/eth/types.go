@@ -228,6 +228,8 @@ type PayloadAttributes struct {
 	PrevRandao Bytes32 `json:"prevRandao"`
 	// suggested value for the coinbase field of the new payload
 	SuggestedFeeRecipient common.Address `json:"suggestedFeeRecipient"`
+	// BlockHash
+	BlockHash common.Hash `json:"blockHash"`
 	// Transactions to force into the block (always at the start of the transactions list).
 	Transactions []Data `json:"transactions,omitempty"`
 	// NoTxPool to disable adding any transactions from the transaction-pool.

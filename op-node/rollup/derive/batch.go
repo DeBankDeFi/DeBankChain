@@ -35,6 +35,7 @@ const (
 
 type BatchV1 struct {
 	ParentHash common.Hash  // parent L2 block hash
+	Hash       common.Hash  // L2 block hash
 	EpochNum   rollup.Epoch // aka l1 num
 	EpochHash  common.Hash  // block hash
 	Timestamp  uint64

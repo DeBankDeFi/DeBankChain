@@ -487,6 +487,7 @@ func (eq *EngineQueue) tryNextSafeAttributes(ctx context.Context) error {
 	if eq.safeAttributes == nil { // sanity check the attributes are there
 		return nil
 	}
+
 	// validate the safe attributes before processing them. The engine may have completed processing them through other means.
 	if eq.safeHead != eq.safeAttributes.parent {
 		// Previously the attribute's parent was the safe head. If the safe head advances so safe head's parent is the same as the
@@ -500,23 +501,35 @@ func (eq *EngineQueue) tryNextSafeAttributes(ctx context.Context) error {
 		// If something other than a simple advance occurred, perform a full reset
 		return NewResetError(fmt.Errorf("safe head changed to %s with parent %s, conflicting with queued safe attributes on top of %s",
 			eq.safeHead, eq.safeHead.ParentID(), eq.safeAttributes.parent))
-
 	}
 
-	if eq.safeHead.Number < eq.unsafeHead.Number {
-		return eq.consolidateNextSafeAttributes(ctx)
-	} else if eq.safeHead.Number == eq.unsafeHead.Number {
-		eq.log.Info("safe head is equal to unsafe head",
-			"safe_head", eq.safeHead, "safe_head_parent", eq.safeHead.ParentID(), "attributes_parent", eq.safeAttributes.parent)
-		//return eq.forceNextSafeAttributes(ctx)
-		return nil
-	} else {
-		// For some reason the unsafe head is behind the safe head. Log it, and correct it.
-		eq.log.Error("invalid sync state, unsafe head is behind safe head", "unsafe", eq.unsafeHead, "safe", eq.safeHead)
-		eq.unsafeHead = eq.safeHead
-		eq.metrics.RecordL2Ref("l2_unsafe", eq.unsafeHead)
-		return nil
+	payload, err := eq.engine.PayloadByNumber(ctx, eq.safeHead.Number+1)
+	if err != nil {
+		if errors.Is(err, ethereum.NotFound) {
+			// engine may have restarted, or inconsistent safe head. We need to reset
+			return NewResetError(fmt.Errorf("expected engine was synced and had unsafe block to reconcile, but cannot find the block: %w", err))
+		}
+		return NewTemporaryError(fmt.Errorf("failed to get existing unsafe payload to compare against derived attributes from L1: %w", err))
 	}
+
+	if eq.safeAttributes.attributes.BlockHash != payload.BlockHash {
+		eq.log.Warn("L2 reorg: existing unsafe block does not match derived attributes from L1", "unsafe", eq.unsafeHead, "safe", eq.safeHead)
+		return NewResetError(fmt.Errorf("existing unsafe block does not match derived attributes from L1"))
+	}
+
+	ref, err := PayloadToBlockRef(payload, &eq.cfg.Genesis)
+	if err != nil {
+		return NewResetError(fmt.Errorf("failed to decode L2 block ref from payload: %w", err))
+	}
+
+	eq.safeHead = ref
+	eq.needForkchoiceUpdate = true
+	eq.metrics.RecordL2Ref("l2_safe", ref)
+	// unsafe head stays the same, we did not reorg the chain.
+	eq.safeAttributes = nil
+	eq.postProcessSafeL2()
+	eq.logSyncProgress("reconciled with L1")
+	return nil
 }
 
 // consolidateNextSafeAttributes tries to match the next safe attributes against the existing unsafe chain,
