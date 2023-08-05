@@ -424,7 +424,8 @@ func (eq *EngineQueue) tryNextUnsafePayload(ctx context.Context) error {
 	}
 
 	if first == nil || uint64(first.BlockNumber) > eq.unsafeHead.Number+1 {
-		// TODO trigger a resync of the missing unsafe blocks
+		// engine queue should have already triggered a resync of the missing unsafe blocks
+		// so we don't need to do anything here, just wait for the missing blocks arriving
 		return io.EOF
 	}
 

@@ -381,7 +381,7 @@ func (s *SyncClient) onRangeRequest(ctx context.Context, req rangeRequest) {
 	s.trusted.Add(req.end.Hash, struct{}{})
 	s.trusted.Add(req.end.ParentHash, struct{}{})
 
-	log := s.log.New("target", req.start, "end", req.end)
+	log := s.log.New("start", req.start, "end", req.end)
 
 	// clean up the completed in-flight requests
 	for k, v := range s.inFlight {
@@ -391,11 +391,12 @@ func (s *SyncClient) onRangeRequest(ctx context.Context, req rangeRequest) {
 	}
 
 	// Now try to fetch lower numbers than current end, to traverse back towards the updated start.
-	for i := uint64(0); ; i++ {
-		num := req.end.Number - 1 - i
-		if num <= req.start {
-			return
-		}
+	for num := req.start+1; num <= req.end.Number ; num++ {
+		// num := req.end.Number - 1 - i
+		// if num <= req.start {
+		// 	return
+		// }
+
 		// check if we have something in quarantine already
 		if h, ok := s.quarantineByNum[num]; ok {
 			if s.trusted.Contains(h) { // if we trust it, try to promote it.
