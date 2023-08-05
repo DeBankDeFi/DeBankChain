@@ -455,30 +455,30 @@ func (eq *EngineQueue) tryNextUnsafePayload(ctx context.Context) error {
 	}
 
 	// Mark the new payload as valid
-	// fc := eth.ForkchoiceState{
-	// 	HeadBlockHash:      first.BlockHash,
-	// 	SafeBlockHash:      eq.safeHead.Hash, // this should guarantee we do not reorg past the safe head
-	// 	FinalizedBlockHash: eq.finalized.Hash,
-	// }
-	// fcRes, err := eq.engine.ForkchoiceUpdate(ctx, &fc, nil)
-	// if err != nil {
-	// 	var inputErr eth.InputError
-	// 	if errors.As(err, &inputErr) {
-	// 		switch inputErr.Code {
-	// 		case eth.InvalidForkchoiceState:
-	// 			return NewResetError(fmt.Errorf("pre-unsafe-block forkchoice update was inconsistent with engine, need reset to resolve: %w", inputErr.Unwrap()))
-	// 		default:
-	// 			return NewTemporaryError(fmt.Errorf("unexpected error code in forkchoice-updated response: %w", err))
-	// 		}
-	// 	} else {
-	// 		return NewTemporaryError(fmt.Errorf("failed to update forkchoice to prepare for new unsafe payload: %w", err))
-	// 	}
-	// }
-	// if fcRes.PayloadStatus.Status != eth.ExecutionValid && status.Status != eth.ExecutionSyncing {
-	// 	eq.unsafePayloads.Pop()
-	// 	return NewTemporaryError(fmt.Errorf("cannot prepare unsafe chain for new payload: new - %v; parent: %v; err: %w",
-	// 		first.ID(), first.ParentID(), eth.ForkchoiceUpdateErr(fcRes.PayloadStatus)))
-	// }
+	fc := eth.ForkchoiceState{
+		HeadBlockHash:      first.BlockHash,
+		SafeBlockHash:      eq.safeHead.Hash, // this should guarantee we do not reorg past the safe head
+		FinalizedBlockHash: eq.finalized.Hash,
+	}
+	fcRes, err := eq.engine.ForkchoiceUpdate(ctx, &fc, nil)
+	if err != nil {
+		var inputErr eth.InputError
+		if errors.As(err, &inputErr) {
+			switch inputErr.Code {
+			case eth.InvalidForkchoiceState:
+				return NewResetError(fmt.Errorf("pre-unsafe-block forkchoice update was inconsistent with engine, need reset to resolve: %w", inputErr.Unwrap()))
+			default:
+				return NewTemporaryError(fmt.Errorf("unexpected error code in forkchoice-updated response: %w", err))
+			}
+		} else {
+			return NewTemporaryError(fmt.Errorf("failed to update forkchoice to prepare for new unsafe payload: %w", err))
+		}
+	}
+	if fcRes.PayloadStatus.Status != eth.ExecutionValid {
+		eq.unsafePayloads.Pop()
+		return NewTemporaryError(fmt.Errorf("cannot prepare unsafe chain for new payload: new - %v; parent: %v; err: %w",
+			first.ID(), first.ParentID(), eth.ForkchoiceUpdateErr(fcRes.PayloadStatus)))
+	}
 
 	eq.unsafeHead = ref
 	eq.unsafePayloads.Pop()
