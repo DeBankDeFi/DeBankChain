@@ -85,8 +85,9 @@ type newStreamFn func(ctx context.Context, peerId peer.ID, protocolId ...protoco
 type receivePayloadFn func(ctx context.Context, from peer.ID, payload *eth.ExecutionPayload) error
 
 type rangeRequest struct {
-	start uint64
-	end   eth.L2BlockRef
+	start      uint64
+	startBlock eth.L2BlockRef
+	end        eth.L2BlockRef
 }
 
 type syncResult struct {
@@ -320,7 +321,7 @@ func (s *SyncClient) RequestL2Range(ctx context.Context, start, end eth.L2BlockR
 	}
 	// synchronize requests with the main loop for state access
 	select {
-	case s.requests <- rangeRequest{start: start.Number, end: end}:
+	case s.requests <- rangeRequest{start: start.Number, startBlock: start, end: end}:
 		return nil
 	case <-ctx.Done():
 		return fmt.Errorf("too busy with P2P results/requests: %w", ctx.Err())
@@ -391,7 +392,7 @@ func (s *SyncClient) onRangeRequest(ctx context.Context, req rangeRequest) {
 	}
 
 	// Now try to fetch lower numbers than current end, to traverse back towards the updated start.
-	for num := req.start+1; num <= req.end.Number ; num++ {
+	for num := req.start + 1; num <= req.end.Number; num++ {
 		// num := req.end.Number - 1 - i
 		// if num <= req.start {
 		// 	return
@@ -461,24 +462,25 @@ func (s *SyncClient) promote(ctx context.Context, res syncResult) {
 		s.log.Warn("failed to promote payload, receiver error", "err", err)
 		return
 	}
-	s.trusted.Add(res.payload.BlockHash, struct{}{})
-	if s.quarantine.Remove(res.payload.BlockHash) {
-		s.log.Debug("promoted previously p2p-synced block from quarantine to main", "id", res.payload.ID())
-	} else {
-		s.log.Debug("promoted new p2p-synced block to main", "id", res.payload.ID())
-	}
 
-	// Mark parent block as trusted, so that we can promote it once we receive it / find it
-	s.trusted.Add(res.payload.ParentHash, struct{}{})
+	// s.trusted.Add(res.payload.BlockHash, struct{}{})
+	// if s.quarantine.Remove(res.payload.BlockHash) {
+	// 	s.log.Debug("promoted previously p2p-synced block from quarantine to main", "id", res.payload.ID())
+	// } else {
+	// 	s.log.Debug("promoted new p2p-synced block to main", "id", res.payload.ID())
+	// }
 
-	// Try to promote the parent block too, if any: previous unverifiable data may now be canonical
-	s.tryPromote(res.payload.ParentHash)
+	// // Mark parent block as trusted, so that we can promote it once we receive it / find it
+	// s.trusted.Add(res.payload.ParentHash, struct{}{})
 
-	// In case we don't have the parent, and what we have in quarantine is wrong,
-	// clear what we buffered in favor of fetching something else.
-	if h, ok := s.quarantineByNum[uint64(res.payload.BlockNumber)-1]; ok {
-		s.quarantine.Remove(h)
-	}
+	// // Try to promote the parent block too, if any: previous unverifiable data may now be canonical
+	// s.tryPromote(res.payload.ParentHash)
+
+	// // In case we don't have the parent, and what we have in quarantine is wrong,
+	// // clear what we buffered in favor of fetching something else.
+	// if h, ok := s.quarantineByNum[uint64(res.payload.BlockNumber)-1]; ok {
+	// 	s.quarantine.Remove(h)
+	// }
 }
 
 // onResult is exclusively called by the main loop, and has thus direct access to the request bookkeeping state.
@@ -488,13 +490,13 @@ func (s *SyncClient) onResult(ctx context.Context, res syncResult) {
 	// Clean up the in-flight request, we have a result now.
 	delete(s.inFlight, uint64(res.payload.BlockNumber))
 	// Always put it in quarantine first. If promotion fails because the receiver is too busy, this functions as cache.
-	s.quarantine.Add(res.payload.BlockHash, res)
-	s.quarantineByNum[uint64(res.payload.BlockNumber)] = res.payload.BlockHash
+	//s.quarantine.Add(res.payload.BlockHash, res)
+	//s.quarantineByNum[uint64(res.payload.BlockNumber)] = res.payload.BlockHash
 	s.metrics.PayloadsQuarantineSize(s.quarantine.Len())
 	// If we know this block is canonical, then promote it
-	if s.trusted.Contains(res.payload.BlockHash) {
-		s.promote(ctx, res)
-	}
+	//if s.trusted.Contains(res.payload.BlockHash) {
+	s.promote(ctx, res)
+	//}
 }
 
 // peerLoop for syncing from a single peer
