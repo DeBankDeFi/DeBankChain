@@ -278,7 +278,7 @@ func (n *NodeP2P) DiscoveryProcess(ctx context.Context, log log.Logger, cfg *rol
 				return
 			}
 			addrs := n.Host().Peerstore().Addrs(id)
-			log.Info("attempting connection", "peer", id)
+			log.Debug("attempting connection", "peer", id)
 			ctx, cancel := context.WithTimeout(ctx, time.Second*10)
 			err := n.Host().Connect(ctx, peer.AddrInfo{ID: id, Addrs: addrs})
 			cancel()
