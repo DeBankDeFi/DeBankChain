@@ -84,15 +84,17 @@ func (bq *BatchQueue) NextBatch(ctx context.Context, safeL2Head eth.L2BlockRef) 
 
 	// Load more data into the batch queue
 	outOfData := false
+	var batch *BatchData
+	var err error
 	if batch, err := bq.prev.NextBatch(ctx); err == io.EOF {
-		bq.log.Info("next batch empty", "err", err)
 		outOfData = true
 	} else if err != nil {
-		bq.log.Info("next batch empty", "err", err)
 		return nil, err
 	} else if !originBehind {
 		bq.AddBatch(batch, safeL2Head)
 	}
+
+	bq.log.Info("next batch result", "batch", batch, "err", err, "outOfData", outOfData)
 
 	// Skip adding data unless we are up to date with the origin, but do fully
 	// empty the previous stages
@@ -105,7 +107,7 @@ func (bq *BatchQueue) NextBatch(ctx context.Context, safeL2Head eth.L2BlockRef) 
 	}
 
 	// Finally attempt to derive more batches
-	batch, err := bq.deriveNextBatch(ctx, outOfData, safeL2Head)
+	batch, err = bq.deriveNextBatch(ctx, outOfData, safeL2Head)
 	if err == io.EOF && outOfData {
 		return nil, io.EOF
 	} else if err == io.EOF {
