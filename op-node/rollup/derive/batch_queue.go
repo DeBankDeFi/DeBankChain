@@ -79,14 +79,16 @@ func (bq *BatchQueue) NextBatch(ctx context.Context, safeL2Head eth.L2BlockRef) 
 			// originBehind is false.
 			bq.l1Blocks = bq.l1Blocks[:0]
 		}
-		bq.log.Info("Advancing bq origin", "origin", bq.origin, "originBehind", originBehind)
+		bq.log.Info("Advancing bq origin", "origin", bq.origin, "originBehind", originBehind, "safeL2HeadL1Origin", safeL2Head.L1Origin)
 	}
 
 	// Load more data into the batch queue
 	outOfData := false
 	if batch, err := bq.prev.NextBatch(ctx); err == io.EOF {
+		bq.log.Info("next batch empty", "err", err)
 		outOfData = true
 	} else if err != nil {
+		bq.log.Info("next batch empty", "err", err)
 		return nil, err
 	} else if !originBehind {
 		bq.AddBatch(batch, safeL2Head)
