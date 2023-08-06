@@ -217,6 +217,8 @@ batchLoop:
 		return nextBatch.Batch, nil
 	}
 
+	bq.log.Info("No batch found", "epoch", epoch, "batch_epoch", "origin", bq.origin)
+
 	return nil, io.EOF
 
 	// If the current epoch is too old compared to the L1 block we are at,

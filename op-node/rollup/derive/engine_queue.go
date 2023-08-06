@@ -238,17 +238,21 @@ func (eq *EngineQueue) Step(ctx context.Context) error {
 	newOrigin := eq.prev.Origin()
 	// Check if the L2 unsafe head origin is consistent with the new origin
 	if err := eq.verifyNewL1Origin(ctx, newOrigin); err != nil {
+		eq.log.Warn("very L1 origin failed safe attributes", "safe_head", eq.safeHead, "newOrigin", newOrigin, "err", err)
 		return err
 	}
 	eq.origin = newOrigin
 	eq.postProcessSafeL2() // make sure we track the last L2 safe head for every new L1 block
 	// try to finalize the L2 blocks we have synced so far (no-op if L1 finality is behind)
 	if err := eq.tryFinalizePastL2Blocks(ctx); err != nil {
+		eq.log.Warn("try finalize past L2 blocks failed", "safe_head", eq.safeHead, "newOrigin", newOrigin, "err", err)
 		return err
 	}
 	if next, err := eq.prev.NextAttributes(ctx, eq.safeHead); err == io.EOF {
+		eq.log.Warn("not next attributes", "safe_head", eq.safeHead, "newOrigin", newOrigin, "err", err)
 		outOfData = true
 	} else if err != nil {
+		eq.log.Warn("not next attributes", "safe_head", eq.safeHead, "newOrigin", newOrigin, "err", err)
 		return err
 	} else {
 		eq.safeAttributes = &attributesWithParent{
