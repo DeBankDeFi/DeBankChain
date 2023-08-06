@@ -421,7 +421,7 @@ func (eq *EngineQueue) tryUpdateEngine(ctx context.Context) error {
 func (eq *EngineQueue) tryNextUnsafePayload(ctx context.Context) error {
 	first := eq.unsafePayloads.Peek()
 	for first != nil && uint64(first.BlockNumber) <= eq.unsafeHead.Number {
-		eq.log.Info("skip old payload", "safe", eq.safeHead.ID(), "unsafe", eq.unsafeHead.ID(), "payload", first.ID())
+		eq.log.Debug("skip old payload", "safe", eq.safeHead.ID(), "unsafe", eq.unsafeHead.ID(), "payload", first.ID())
 
 		eq.unsafePayloads.Pop()
 		first = eq.unsafePayloads.Peek()
@@ -430,6 +430,7 @@ func (eq *EngineQueue) tryNextUnsafePayload(ctx context.Context) error {
 	if first == nil || uint64(first.BlockNumber) > eq.unsafeHead.Number+1 {
 		// engine queue should have already triggered a resync of the missing unsafe blocks
 		// so we don't need to do anything here, just wait for the missing blocks arriving
+		eq.log.Debug("payload too new, wait for the missing gap is filled", "safe", eq.safeHead.ID(), "unsafe", eq.unsafeHead.ID(), "payload", first.ID())
 		return io.EOF
 	}
 
