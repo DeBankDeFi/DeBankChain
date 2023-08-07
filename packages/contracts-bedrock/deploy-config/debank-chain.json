@@ -5,7 +5,7 @@
     "portalGuardian": "0xae4296Cd2B8D43Be762B990F49372ECd4073f6b2",
     "controller": "0xae4296Cd2B8D43Be762B990F49372ECd4073f6b2",
 
-    "l1StartingBlockTag": "0xe50e51f2bfde676a09407d21e6d502c938c124b3e765b56eb2554a453df33c71",
+    "l1StartingBlockTag": "0xc969cb02d9f77ec0e620cdb089be94e7d719dd384ae029d14744b1487b207022",
 
     "l1ChainID": 5,
     "l2ChainID": 2021398,
@@ -21,7 +21,7 @@
 
     "l2OutputOracleSubmissionInterval": 120,
     "l2OutputOracleStartingBlockNumber": 0,
-    "l2OutputOracleStartingTimestamp": 1690876128,
+    "l2OutputOracleStartingTimestamp": 1691374560,
 
     "l2OutputOracleProposer": "0xB23f36a6a60Aa98B893eccD8B5a8F9267e5118e5",
     "l2OutputOracleChallenger": "0xae4296Cd2B8D43Be762B990F49372ECd4073f6b2",
