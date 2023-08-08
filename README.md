@@ -26,6 +26,7 @@ Besides the [differentiators of bedrock](https://community.optimism.io/docs/deve
 | Network Name   | DeBank Chain Goerli |
 | Chain ID       | 2021398             |
 | Explorer       | https://explorer.testnet.debank.com |
+| RPC Endpoint   | https://rpc.testnet.debank.com |
 
 ## Documentation
 
