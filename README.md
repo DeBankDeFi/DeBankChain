@@ -9,7 +9,7 @@ Besides the [differentiators of bedrock](https://community.optimism.io/docs/deve
 
 ### Node optimization
 
-- Batch block submitting
+- The consensus logic has been modified reducing the L1 data storage gas cost by 100 to 400 times
 - Optimized block verification bettwen layer 1 and layer 2
 - Customized trancaction type
 - Block time is 2 seconds
@@ -20,6 +20,15 @@ Besides the [differentiators of bedrock](https://community.optimism.io/docs/deve
 - EVM Transaction Tracing
 - Multicall
 
+## Public RPC & APIs
+
+| Parameter | Value |
+| -------------- | ------------------- |
+| Network Name   | DeBank Chain Goerli |
+| Chain ID       | 2021398             |
+| Explorer       | https://explorer.testnet.debank.com |
+| RPC Endpoint   | https://rpc.testnet.debank.com |
+| Sequencer      | https://sequencer.testnet.debank.com |
 
 ## Documentation
 
