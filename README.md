@@ -23,7 +23,7 @@ Besides the [differentiators of bedrock](https://community.optimism.io/docs/deve
 
 | Parameter | Value |
 | -------------- | ------------------- |
-| Network Name   | DeBank Chain Testnet|
+| Network Name   | DeBank Testnet      |
 | Chain ID       | 2021398             |
 | Explorer       | https://explorer.testnet.debank.com |
 | RPC Endpoint   | https://rpc.testnet.debank.com |
