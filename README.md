@@ -10,9 +10,8 @@ Besides the [differentiators of bedrock](https://community.optimism.io/docs/deve
 ### Node optimization
 
 - The consensus logic has been modified reducing the L1 data storage gas cost by 100 to 400 times
-- Optimized block verification bettwen layer 1 and layer 2
-- Customized trancaction type
-- Block time is 2 seconds
+- An Abstract Accounts(AA)-like account system has been implemented natively, giving users a web2-like experience while maintaining 100% compatibility with existing EVM standards
+- The new account system supports transactions signed with second-layer private keys specifically generated, reducing the use of L1 private keys in low-value scenarios and enhancing the security of users' large assets.
 
 ### JSONRPC-API enhancement
 
@@ -27,8 +26,6 @@ Besides the [differentiators of bedrock](https://community.optimism.io/docs/deve
 | Network Name   | DeBank Chain Goerli |
 | Chain ID       | 2021398             |
 | Explorer       | https://explorer.testnet.debank.com |
-| RPC Endpoint   | https://rpc.testnet.debank.com |
-| Sequencer      | https://sequencer.testnet.debank.com |
 
 ## Documentation
 
