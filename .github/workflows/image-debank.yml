@@ -4,13 +4,13 @@ on:
   pull_request:
     branches:
       - "debank"
+      - "main"
   workflow_dispatch:
 env:
   REGISTRY: 294354037686.dkr.ecr.ap-northeast-1.amazonaws.com
   IMAGE: blockchain-dbk
 
 jobs:
-
   build-op-bootnode:
     runs-on: [self-hosted, linux]
     steps:
