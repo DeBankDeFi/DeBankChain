@@ -67,5 +67,5 @@ Response
 ```
 
 ## Reference
-- [EVM  Tracin](https://geth.ethereum.org/docs/developers/evm-tracing)
+- [EVM  Tracing](https://geth.ethereum.org/docs/developers/evm-tracing)
 - [Parity Trace Module](https://openethereum.github.io/JSONRPC-trace-module)
