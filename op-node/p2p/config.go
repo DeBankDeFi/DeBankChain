@@ -119,6 +119,9 @@ type Config struct {
 	Store ds.Batching
 
 	EnableReqRespSync bool
+
+	// SequencerAddr is used to verify whether the gossip blocks received from p2p application are signed by our sequencer
+	SequencerAddr string
 }
 
 func DefaultConnManager(conf *Config) (connmgr.ConnManager, error) {

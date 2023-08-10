@@ -37,4 +37,5 @@ var Flags = []cli.Flag{
 
 func init() {
 	Flags = append(Flags, oplog.CLIFlags(envVarPrefix)...)
+	Flags = append(Flags, flags.P2pFlags...)
 }

@@ -25,10 +25,12 @@ func (g *gossipNoop) OnUnsafeL2Payload(_ context.Context, _ peer.ID, _ *eth.Exec
 	return nil
 }
 
-type gossipConfig struct{}
+type gossipConfig struct {
+	SequencerAddr common.Address
+}
 
 func (g *gossipConfig) P2PSequencerAddress() common.Address {
-	return common.Address{}
+	return g.SequencerAddr
 }
 
 type l2Chain struct{}
@@ -57,7 +59,7 @@ func Main(cliCtx *cli.Context) error {
 		return fmt.Errorf("failed to load p2p config: %w", err)
 	}
 
-	p2pNode, err := p2p.NewNodeP2P(ctx, config, logger, p2pConfig, &gossipNoop{}, &l2Chain{}, &gossipConfig{}, m)
+	p2pNode, err := p2p.NewNodeP2P(ctx, config, logger, p2pConfig, &gossipNoop{}, &l2Chain{}, &gossipConfig{SequencerAddr: common.HexToAddress(p2pConfig.SequencerAddr)}, m)
 	if err != nil || p2pNode == nil {
 		return err
 	}

@@ -64,6 +64,7 @@ func NewConfig(ctx *cli.Context, rollupCfg *rollup.Config) (*p2p.Config, error) 
 	}
 
 	conf.EnableReqRespSync = ctx.Bool(flags.SyncReqRespFlag.Name)
+	conf.SequencerAddr = ctx.String(flags.SequencerP2PAddrFlag.Name)
 
 	return conf, nil
 }

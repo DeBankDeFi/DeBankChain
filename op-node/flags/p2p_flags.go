@@ -250,6 +250,13 @@ var (
 		Value:    "",
 		EnvVars:  p2pEnv("SEQUENCER_KEY"),
 	}
+	SequencerP2PAddrFlag = &cli.StringFlag{
+		Name:     "p2p.sequencer.addr",
+		Usage:    "Hex-encoded sequencer address for verifying p2p application messages.",
+		Required: false,
+		Value:    "",
+		EnvVars:  p2pEnv("SEQUENCER_ADDR"),
+	}
 	GossipMeshDFlag = &cli.UintFlag{
 		Name:     "p2p.gossip.mesh.d",
 		Usage:    "Configure GossipSub topic stable mesh target count, a.k.a. desired outbound degree, number of peers to gossip to",
@@ -299,7 +306,7 @@ var (
 
 // None of these flags are strictly required.
 // Some are hidden if they are too technical, or not recommended.
-var p2pFlags = []cli.Flag{
+var P2pFlags = []cli.Flag{
 	DisableP2P,
 	NoDiscovery,
 	P2PPrivPath,
@@ -332,6 +339,7 @@ var p2pFlags = []cli.Flag{
 	PeerstorePath,
 	DiscoveryPath,
 	SequencerP2PKeyFlag,
+	SequencerP2PAddrFlag,
 	GossipMeshDFlag,
 	GossipMeshDloFlag,
 	GossipMeshDhiFlag,
