@@ -32,6 +32,10 @@ op-node:
 	make -C ./op-node op-node
 .PHONY: op-node
 
+op-bootnode:
+	make -C ./op-bootnode op-bootnode
+.PHONY: op-bootnode
+
 generate-mocks-op-node:
 	make -C ./op-node generate-mocks
 .PHONY: generate-mocks-op-node
