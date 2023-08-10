@@ -70,9 +70,40 @@ var Goerli = rollup.Config{
 	RegolithTime:           u64Ptr(1679079600),
 }
 
+var DeBankTestnet = rollup.Config{
+	Genesis: rollup.Genesis{
+		L1: eth.BlockID{
+			Hash:   common.HexToHash("0xc969cb02d9f77ec0e620cdb089be94e7d719dd384ae029d14744b1487b207022"),
+			Number: 9475217,
+		},
+		L2: eth.BlockID{
+			Hash:   common.HexToHash("0xfd00a1bbe1751624e4ee133fac571c82466d154837a4f7c60b69d0372126a389"),
+			Number: 0,
+		},
+		L2Time: 1691374560,
+		SystemConfig: eth.SystemConfig{
+			BatcherAddr: common.HexToAddress("0xafab5ced42bb5231f553c55397304a53302819a3"),
+			Overhead:    eth.Bytes32(common.HexToHash("0x0000000000000000000000000000000000000000000000000000000000000834")),
+			Scalar:      eth.Bytes32(common.HexToHash("0x00000000000000000000000000000000000000000000000000000000000f4240")),
+			GasLimit:    30_000_000,
+		},
+	},
+	BlockTime:              2,
+	MaxSequencerDrift:      600,
+	SeqWindowSize:          3600,
+	ChannelTimeout:         300,
+	L1ChainID:              big.NewInt(5),
+	L2ChainID:              big.NewInt(2021398),
+	BatchInboxAddress:      common.HexToAddress("0xff00000000000000000000000000000002021398"),
+	DepositContractAddress: common.HexToAddress("0x64890712f6fb86ae475b3441459e8828e53de056"),
+	L1SystemConfigAddress:  common.HexToAddress("0x82edda95c2a4a4a8a599b41a1ad4b6be86927d2b"),
+	RegolithTime:           u64Ptr(0),
+}
+
 var NetworksByName = map[string]rollup.Config{
-	"goerli":  Goerli,
-	"mainnet": Mainnet,
+	"goerli":         Goerli,
+	"mainnet":        Mainnet,
+	"debank-testnet": DeBankTestnet,
 }
 
 var L2ChainIDToNetworkName = func() map[string]string {
