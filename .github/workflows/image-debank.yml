@@ -45,7 +45,7 @@ jobs:
           context: .
           file: ./op-bootnode/Dockerfile.debank
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE }}:op-node-${{ env.REVISION }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE }}:op-bootnode-${{ env.REVISION }}
           build-args: |
             VERSION=${{ env.REVISION }}
 
