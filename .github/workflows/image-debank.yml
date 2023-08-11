@@ -12,23 +12,24 @@ env:
 
 jobs:
   build-op-bootnode:
-    runs-on: [self-hosted, Linux]
+    runs-on: [self-hosted,Linux]
     steps:
       - name: Install Go
         uses: actions/setup-go@v2
         with:
           go-version: 1.20.x
 
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-
       - uses: tibdex/github-app-token@v1
         id: generate-token
         with:
           app_id: ${{ secrets.RELEASE_MANAGER_APP_ID }}
           private_key: ${{ secrets.RELEASE_MANAGER_APP_SECRET }}
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          token: ${{ steps.generate-token.outputs.token }}
 
       - name: Set env
         run: |
@@ -49,23 +50,24 @@ jobs:
             VERSION=${{ env.REVISION }}
 
   build-op-node:
-    runs-on: [self-hosted, Linux]
+    runs-on: [self-hosted,Linux]
     steps:
       - name: Install Go
         uses: actions/setup-go@v2
         with:
           go-version: 1.20.x
 
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-
       - uses: tibdex/github-app-token@v1
         id: generate-token
         with:
           app_id: ${{ secrets.RELEASE_MANAGER_APP_ID }}
           private_key: ${{ secrets.RELEASE_MANAGER_APP_SECRET }}
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          token: ${{ steps.generate-token.outputs.token }}
 
       - name: Set env
         run: |
@@ -86,23 +88,24 @@ jobs:
             VERSION=${{ env.REVISION }}
 
   build-op-batcher:
-    runs-on: [self-hosted, Linux]
+    runs-on: [self-hosted,Linux]
     steps:
       - name: Install Go
         uses: actions/setup-go@v2
         with:
           go-version: 1.20.x
 
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-
       - uses: tibdex/github-app-token@v1
         id: generate-token
         with:
           app_id: ${{ secrets.RELEASE_MANAGER_APP_ID }}
           private_key: ${{ secrets.RELEASE_MANAGER_APP_SECRET }}
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          token: ${{ steps.generate-token.outputs.token }}
 
       - name: Set env
         run: |
@@ -123,23 +126,24 @@ jobs:
             VERSION=${{ env.REVISION }}
 
   build-op-proposer:
-    runs-on: [self-hosted, Linux]
+    runs-on: [self-hosted,Linux]
     steps:
       - name: Install Go
         uses: actions/setup-go@v2
         with:
           go-version: 1.20.x
 
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-
       - uses: tibdex/github-app-token@v1
         id: generate-token
         with:
           app_id: ${{ secrets.RELEASE_MANAGER_APP_ID }}
           private_key: ${{ secrets.RELEASE_MANAGER_APP_SECRET }}
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          token: ${{ steps.generate-token.outputs.token }}
 
       - name: Set env
         run: |
