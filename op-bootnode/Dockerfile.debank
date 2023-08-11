@@ -1,0 +1,6 @@
+
+FROM ubuntu:23.04
+
+COPY op-bootnode/bin/op-bootnode /usr/local/bin
+
+CMD ["op-bootnode"]
