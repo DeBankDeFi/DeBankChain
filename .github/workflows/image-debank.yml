@@ -24,6 +24,11 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
+      - uses: tibdex/github-app-token@v1
+        id: generate-token
+        with:
+          app_id: ${{ secrets.RELEASE_MANAGER_APP_ID }}
+          private_key: ${{ secrets.RELEASE_MANAGER_APP_SECRET }}
 
       - name: Set env
         run: |
@@ -31,6 +36,7 @@ jobs:
 
       - name: Build
         run: |
+          git config --global url."https://x-access-token:${{ steps.generate-token.outputs.token }}@github.com".insteadOf "https://github.com"
           make op-bootnode VERSION=${{ env.REVISION }} GOOS=linux GOARCH=amd64
 
       - name: Build image and push to ECR
@@ -55,6 +61,11 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
+      - uses: tibdex/github-app-token@v1
+        id: generate-token
+        with:
+          app_id: ${{ secrets.RELEASE_MANAGER_APP_ID }}
+          private_key: ${{ secrets.RELEASE_MANAGER_APP_SECRET }}
 
       - name: Set env
         run: |
@@ -62,6 +73,7 @@ jobs:
 
       - name: Build
         run: |
+          git config --global url."https://x-access-token:${{ steps.generate-token.outputs.token }}@github.com".insteadOf "https://github.com"
           make op-node VERSION=${{ env.REVISION }} GOOS=linux GOARCH=amd64
 
       - name: Build image and push to ECR
@@ -87,6 +99,11 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
+      - uses: tibdex/github-app-token@v1
+        id: generate-token
+        with:
+          app_id: ${{ secrets.RELEASE_MANAGER_APP_ID }}
+          private_key: ${{ secrets.RELEASE_MANAGER_APP_SECRET }}
 
       - name: Set env
         run: |
@@ -94,6 +111,7 @@ jobs:
 
       - name: Build
         run: |
+          git config --global url."https://x-access-token:${{ steps.generate-token.outputs.token }}@github.com".insteadOf "https://github.com"
           make op-batcher VERSION=${{ env.REVISION }} GOOS=linux GOARCH=amd64
 
       - name: Build image and push to ECR
@@ -120,12 +138,19 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
+      - uses: tibdex/github-app-token@v1
+        id: generate-token
+        with:
+          app_id: ${{ secrets.RELEASE_MANAGER_APP_ID }}
+          private_key: ${{ secrets.RELEASE_MANAGER_APP_SECRET }}
+
       - name: Set env
         run: |
           echo "REVISION=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Build
         run: |
+          git config --global url."https://x-access-token:${{ steps.generate-token.outputs.token }}@github.com".insteadOf "https://github.com"
           make op-proposer VERSION=${{ env.REVISION }} GOOS=linux GOARCH=amd64
 
       - name: Build image and push to ECR
