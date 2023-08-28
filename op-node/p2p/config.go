@@ -26,29 +26,12 @@ import (
 
 var DefaultBootnodes = []*enode.Node{
 	// Node ID: 5845e1395d7e120912ba2588a8f0451f538caf98d69b9af3602d6f3ab8cc0759
-	// URLv4:   enode://e8154cad86b66c3b1cb9b2c875c263f0cdff8f98ddbfe89fc9516855d141e95593fa3cc5708da8d6c979ecc7a0a919fbc2eaefb7fa8f4198d9753d82151156c8@43.207.77.108:9222?discport=51787
-	// Record has sequence number 1691653398385 and 6 key/value pairs.
-	//   "id"        "v4"
-	//   "ip"        43.207.77.108
-	//   "opstack"   8496b07b00
-	//   "secp256k1" a102e8154cad86b66c3b1cb9b2c875c263f0cdff8f98ddbfe89fc9516855d141e955
-	//   "tcp"       9222
-	//   "udp"       51787
-	//enode.MustParse("enr:-J64QA8c432-TY4uxlxQ4VXQOKWqPlh2g3fGZd_iTAE7PqmWaitTfZOyByHmux87_fqFlZhKtZ_sm-TPYxgIMaaGRBSGAYneZl9xgmlkgnY0gmlwhCvPTWyHb3BzdGFja4SWsHsAiXNlY3AyNTZrMaEC6BVMrYa2bDscubLIdcJj8M3_j5jdv-ifyVFoVdFB6VWDdGNwgiQGg3VkcILKSw"),
+	// URLv4:   enode://e8154cad86b66c3b1cb9b2c875c263f0cdff8f98ddbfe89fc9516855d141e95593fa3cc5708da8d6c979ecc7a0a919fbc2eaefb7fa8f4198d9753d82151156c8@43.207.77.108:9222
+	enode.MustParse("enr:-J64QFlJkZT1p0ni81MkprI1d3Tk4XZjurmq6gkPf-YeCoUWYCAdGv9K8Xe8m0u5EKyuHrLVxSOoHti_b1h3-knZA-aGAYo5_RtjgmlkgnY0gmlwhCvPTWyHb3BzdGFja4SWsHsAiXNlY3AyNTZrMaEC6BVMrYa2bDscubLIdcJj8M3_j5jdv-ifyVFoVdFB6VWDdGNwgiQGg3VkcIIkBg"),
 
 	// Node ID: 0decb516278633804bfded1e1e5b5f684bbfa77f6fbd13cacfea6216db43c63a
-	// URLv4:   enode://43b5fa8dde7b216034ad97c2067ac21d4be62f3860b4d3956abd5baffecf48cedd36791c08e7697c2efec8c2012ce5ca8e919ca7d33c06652924737a0e8cc988@43.207.221.181:9222?discport=49268
-	// Record has sequence number 1691660727153 and 6 key/value pairs.
-	//   "id"        "v4"
-	//   "ip"        43.207.221.181
-	//   "opstack"   8496b07b00
-	//   "secp256k1" a10243b5fa8dde7b216034ad97c2067ac21d4be62f3860b4d3956abd5baffecf48ce
-	//   "tcp"       9222
-	//   "udp"       49268
-	//enode.MustParse("enr:-J64QFI65ajctEyDMwkqoNt9tNAsyDFauQA45ugqOz9POiKrU--o2sHNpy3acA6muag_K0fEGRkmGTdkFwwMeMyf6_GGAYne1jNxgmlkgnY0gmlwhCvP3bWHb3BzdGFja4SWsHsAiXNlY3AyNTZrMaECQ7X6jd57IWA0rZfCBnrCHUvmLzhgtNOVar1br_7PSM6DdGNwgiQGg3VkcILAdA"),
-
-	enode.MustParse("enode://43b5fa8dde7b216034ad97c2067ac21d4be62f3860b4d3956abd5baffecf48cedd36791c08e7697c2efec8c2012ce5ca8e919ca7d33c06652924737a0e8cc988@43.207.221.181:9222?discport=49268"),
-	enode.MustParse("enode://43b5fa8dde7b216034ad97c2067ac21d4be62f3860b4d3956abd5baffecf48cedd36791c08e7697c2efec8c2012ce5ca8e919ca7d33c06652924737a0e8cc988@43.207.221.181:9222?discport=49268"),
+	// URLv4:   enode://43b5fa8dde7b216034ad97c2067ac21d4be62f3860b4d3956abd5baffecf48cedd36791c08e7697c2efec8c2012ce5ca8e919ca7d33c06652924737a0e8cc988@43.207.221.181:9222
+	enode.MustParse("enr:-J64QHyNa7et1FC3rv9oXUZ4B5P8PBSvS7AsKW4xrQRkBtHvGifMjBl0COB2VxzPPHCgku29wSiqM2NbSOFaZI6GV6WGAYo6BJ7mgmlkgnY0gmlwhCvP3bWHb3BzdGFja4SWsHsAiXNlY3AyNTZrMaECQ7X6jd57IWA0rZfCBnrCHUvmLzhgtNOVar1br_7PSM6DdGNwgiQGg3VkcIIkBg"),
 }
 
 type HostMetrics interface {
