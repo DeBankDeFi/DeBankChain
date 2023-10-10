@@ -3,7 +3,7 @@ name: "Build Docker Image"
 on:
   pull_request:
     branches:
-      - 'debank'
+      - "debank"
   workflow_dispatch:
 env:
   REGISTRY: 294354037686.dkr.ecr.ap-northeast-1.amazonaws.com
@@ -48,7 +48,6 @@ jobs:
           build-args: |
             VERSION=${{ env.REVISION }}
 
-
   build-op-batcher:
     runs-on: [self-hosted, linux]
     steps:
@@ -74,6 +73,7 @@ jobs:
 
       - name: Build
         run: |
+          rm -f ~/.gitconfig
           make op-batcher VERSION=${{ env.REVISION }} GOOS=linux GOARCH=amd64
 
       - name: Build image and push to ECR
@@ -111,6 +111,7 @@ jobs:
 
       - name: Build
         run: |
+          rm -f ~/.gitconfig
           make op-proposer VERSION=${{ env.REVISION }} GOOS=linux GOARCH=amd64
 
       - name: Build image and push to ECR
