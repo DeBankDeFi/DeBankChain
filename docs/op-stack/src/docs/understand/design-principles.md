@@ -45,7 +45,7 @@ All of this serves to maximize the security and correctness of the OP Stack.
 
 Good OP Stack code is inherently open, collaborative, and extensible. 
 Collaboration allows us to break out of siloed development. 
-Collaboration allows us spend more time building on top of one another's work and less time rebuilding the same components over and over again. 
+Collaboration allows us to spend more time building on top of one another's work and less time rebuilding the same components over and over again. 
 Collaboration is how we win, *together*.
 
 Extensible code should be designed with the mindset that others will want to build with and on top of that code. 
