@@ -5,7 +5,7 @@ on:
     branches:
       - master
 
-# Always wait for previous release to finish before releasing again
+# Always wait for the previous release to finish before releasing again
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
