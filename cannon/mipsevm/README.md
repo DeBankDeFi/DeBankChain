@@ -15,7 +15,7 @@ Supported 55 instructions:
 
 To run:
 1. Load a program into a state, e.g. using `LoadELF`.
-2. Patch the program if necessary: e.g. using `PatchGo` for Go programs, `PatchStack` for empty initial stack, etc.
+2. Patch the program if necessary: e.g. using `PatchGo` for Go programs, `PatchStack` for the empty initial stack, etc.
 4. Implement the `PreimageOracle` interface
 5. Instrument the emulator with the state, and pre-image oracle, using `NewInstrumentedState`
 6. Step through the instrumented state with `Step(proof)`,
