@@ -1,6 +1,6 @@
 # EVM Transaction Tracing
 
-Ethereum has two different types of transactions: regular transfers and contract executions. A regular transfer simply moves Eth from one account to another. However, if the recipient of the transaction is a contract account with associated EVM (Ethereum Virtual Machine) bytecode, this bytecode will be executed as part of the transaction, in addition to transferring any Eth.
+Ethereum has two different types of transactions: regular transfers and contract executions. A regular transfer simply moves Eth from one account to another. However, if the recipient of the transaction is a contract account with an associated EVM (Ethereum Virtual Machine) bytecode, this bytecode will be executed as part of the transaction, in addition to transferring any Eth.
 
 We can check whether this execution was successful through the status code of the transaction receipt, but there's no way to see which data was modified halfway, nor which external contracts were called. To understand what a transaction has done, we need to trace the transaction.
 
