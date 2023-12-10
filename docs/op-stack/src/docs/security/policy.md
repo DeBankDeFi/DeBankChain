@@ -29,7 +29,7 @@ Optimism Mainnet is covered by a comprehensive [bug bounty program on Immunefi]
 
 #### Unscoped bugs
 
-If you think you have found a significant bug or vulnerabilities in OP Stack smart contracts, infrastructure, etc., even if that component is not covered by an existing bug bounty, please report it to via the [Optimism Mainnet Immunefi program](https://immunefi.com/bounty/optimism/). The impact of any and all reported issues will be considered and the program has previously rewarded security researchers for bugs not within its stated scope.
+If you think you have found a significant bug or vulnerabilities in OP Stack smart contracts, infrastructure, etc., even if that component is not covered by an existing bug bounty, please report it via the [Optimism Mainnet Immunefi program](https://immunefi.com/bounty/optimism/). The impact of any and all reported issues will be considered and the program has previously rewarded security researchers for bugs not within its stated scope.
 
 ### Other vulnerabilities
 
