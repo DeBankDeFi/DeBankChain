@@ -54,7 +54,7 @@ The easiest way to withdraw ETH is to send it to the bridge, or the cross domain
    ```
 
 1. Specify the amount of ETH you want to transfer.
-   This code transfers one hundred'th of an ETH.
+   This code transfers one hundredth of an ETH.
 
    ```js
    transferAmt = BigInt(0.01 * 1e18)
