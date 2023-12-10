@@ -20,7 +20,7 @@ That address can call [`pause`](https://github.com/ethereum-optimism/optimism/bl
 ### Changing the guardian
 
 The guardian created by the setup script is the admin account.
-This is sufficient for testing, but for a production system you would want the guardian to be a multisig with trusted security council.
+This is sufficient for testing, but for a production system you would want the guardian to be a multisig with a trusted security council.
 
 The `GUARDIAN` variable is immutable, but the `OptimismPortal` contract sits behind a proxy, so the `GUARDIAN` can be modified by changing the `OptimismPortal` proxy to point to a new implementation contract.
 You do this using the L1 [`ProxyAdmin`](https://github.com/ethereum-optimism/optimism/blob/develop/packages/contracts-bedrock/contracts/universal/ProxyAdmin.sol) contract.
