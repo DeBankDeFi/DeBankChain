@@ -269,7 +269,7 @@ The sequencer is also responsible for posting batches to L1 for other nodes in t
 
 ### Batcher
 
-The role of a sequencer is to produce [batches](#batches). To do this, a sequencer can run [rollup nodes](#rollup-node) and have separate processes which perform [batching](#batches) by reading from a trusted [rollup node](#rollup-node) they run. This warrants an additional component of the OP Stack called a [batcher](https://github.com/ethereum-optimism/optimism/blob/develop/specs/glossary.md#batcher) that reads transaction data from a [rollup node](#rollup-node) and interprets it into [batcher transactions](#minimized-usage-of-ethereum-gas) to be written to the L1. The batcher component is responsible for reading the unsafe L2 head of a [rollup node](#rollup-node) run by a sequencer, creating batcher transactions, and writing them to the L1.
+The role of a sequencer is to produce [batches](#batches). To do this, a sequencer can run [rollup nodes](#rollup-node) and have separate processes that perform [batching](#batches) by reading from a trusted [rollup node](#rollup-node) they run. This warrants an additional component of the OP Stack called a [batcher](https://github.com/ethereum-optimism/optimism/blob/develop/specs/glossary.md#batcher) that reads transaction data from a [rollup node](#rollup-node) and interprets it into [batcher transactions](#minimized-usage-of-ethereum-gas) to be written to the L1. The batcher component is responsible for reading the unsafe L2 head of a [rollup node](#rollup-node) run by a sequencer, creating batcher transactions, and writing them to the L1.
 
 ### Standard Bridge Contracts
 
