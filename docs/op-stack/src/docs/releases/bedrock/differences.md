@@ -4,7 +4,7 @@ lang: en-US
 ---
 
 It's important to note that there are various minor discrepancies between the behavior of Optimism and Ethereum.
-You should be aware of these descrepancies when building apps on top of Optimism or the OP Stack codebase.
+You should be aware of these discrepancies when building apps on top of Optimism or the OP Stack codebase.
 
 ## Opcode Differences
 
