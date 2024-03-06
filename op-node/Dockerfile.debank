@@ -1,8 +1,7 @@
 
 FROM ubuntu:23.04
 
-RUN apt-get install -y ca-certificates
-
+RUN apt update && apt full-upgrade -y && apt install ca-certificates -y
 COPY op-node/bin/op-node /usr/local/bin
 
 CMD ["op-node"]

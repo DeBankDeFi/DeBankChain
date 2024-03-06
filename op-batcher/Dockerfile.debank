@@ -1,6 +1,7 @@
 
 FROM ubuntu:23.04
 
+RUN apt update && apt full-upgrade -y && apt install ca-certificates -y
 COPY op-batcher/bin/op-batcher /usr/local/bin
 
 CMD ["op-batcher"]
