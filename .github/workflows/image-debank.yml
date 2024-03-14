@@ -116,6 +116,8 @@ jobs:
 
       - name: Build
         run: |
+          rm -f ~/.gitconfig
+          git config --global url."https://x-access-token:${{ steps.generate-token.outputs.token }}@github.com".insteadOf "https://github.com"
           make op-proposer VERSION=${{ env.REVISION }} GOOS=linux GOARCH=amd64
 
       - name: Build image and push to ECR
