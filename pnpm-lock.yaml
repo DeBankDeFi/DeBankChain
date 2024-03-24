@@ -448,8 +448,8 @@ importers:
         specifier: ^0.3.11
         version: 0.3.11
       rlp:
-        specifier: ^2.2.7
-        version: 2.2.7
+        specifier: ^3.0.0
+        version: 3.0.0
       semver:
         specifier: ^7.6.0
         version: 7.6.0
@@ -15298,6 +15298,12 @@ packages:
     hasBin: true
     dependencies:
       bn.js: 5.2.1
+    dev: true
+
+  /rlp@3.0.0:
+    resolution: {integrity: sha512-PD6U2PGk6Vq2spfgiWZdomLvRGDreBLxi5jv5M8EpRo3pU6VEm31KO+HFxE18Q3vgqfDrQ9pZA3FP95rkijNKw==}
+    hasBin: true
+    dev: false
 
   /rollup-plugin-visualizer@5.12.0:
     resolution: {integrity: sha512-8/NU9jXcHRs7Nnj07PF2o4gjxmm9lXIrZ8r175bT9dK8qoLlvKTwRMArRCMgpMGlq8CTLugRvEmyMeMXIU2pNQ==}
