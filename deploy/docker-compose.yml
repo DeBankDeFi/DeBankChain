@@ -12,7 +12,7 @@ services:
   op-geth:
     networks:
       - opnet
-    image: 294354037686.dkr.ecr.ap-northeast-1.amazonaws.com/blockchain-op-geth:36e4a277
+    image: 294354037686.dkr.ecr.ap-northeast-1.amazonaws.com/blockchain-op-geth:v1.101308.3-debank-1
     restart: unless-stopped
     stop_grace_period: 1m
     env_file:
@@ -50,7 +50,7 @@ services:
   op-node:
     networks:
       - opnet
-    image: 294354037686.dkr.ecr.ap-northeast-1.amazonaws.com/blockchain-dbk:op-node-5990c89c
+    image: 294354037686.dkr.ecr.ap-northeast-1.amazonaws.com/blockchain-dbk:op-node-v1.7.2.debank.2
     restart: unless-stopped
     stop_grace_period: 1m
     env_file:
@@ -79,3 +79,32 @@ services:
       - --p2p.advertise.ip=$P2P_ADVERTISE_IP
       - --p2p.sync.req-resp
       - --p2p.priv.path=/dbk/opnode_p2p_priv.txt
+
+  op-batcher:
+    networks:
+      - opnet
+    image: 294354037686.dkr.ecr.ap-northeast-1.amazonaws.com/blockchain-dbk:op-batcher-v1.7.2.debank.2
+    restart: unless-stopped
+    stop_grace_period: 1m
+    env_file:
+      - .env
+    ports:
+      - ${PORT__OP_BATCHER_HTTP:-8548}:8548
+      - ${PORT__OP_BATCHER_METRIC_PORT:-7301}:7301
+    command:
+      - op-batcher
+      - --l2-eth-rpc=http://op-geth:8545
+      - --rollup-rpc=http://op-node:8547
+      - --poll-interval=2s
+      - --sub-safety-margin=6
+      - --num-confirmations=1
+      - --safe-abort-nonce-too-low-count=3
+      - --resubmission-timeout=30s
+      - --rpc.addr=0.0.0.0
+      - --rpc.port=8548
+      - --rpc.enable-admin
+      - --metrics.enabled
+      - --metrics.port=7301
+      - --max-channel-duration=50
+      - --l1-eth-rpc=http://data.seth.blockchain
+      - --private-key=$BATCHER_KEY
