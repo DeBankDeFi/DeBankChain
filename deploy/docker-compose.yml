@@ -18,15 +18,12 @@ services:
     env_file:
       - .env
     volumes:
-      - ./scripts/:/scripts
-      - ./assets/:/assets
-      - ${OP_GETH_DATADIR:-/dbk/op-geth}:/op-geth
-      - ${OP_NODE_DATADIR:-/dbk/op-node}:/op-node
+      - ${OP_GETH_DATADIR:-/dbk}:/dbk
     ports:
       - ${PORT__OP_GETH_HTTP:-8545}:8545
       - ${PORT__OP_GETH_METRIC_PORT:-6060}:6060
     command:
-      - --datadir=/op-geth
+      - --datadir=/dbk
       - --http
       - --http.corsdomain=*
       - --http.vhosts=*
@@ -39,9 +36,9 @@ services:
       - --authrpc.vhosts=*
       - --authrpc.addr=0.0.0.0
       - --authrpc.port=8551
-      - --authrpc.jwtsecret=/op-geth/jwt.txt
+      - --authrpc.jwtsecret=/dbk/jwt.txt
       - --rollup.disabletxpoolgossip=true
-      - --password=/op-geth/password
+      - --password=/dbk/password
       - --allow-insecure-unlock
       - --mine
       - --miner.etherbase=$SEQUENCER_ADDR
@@ -59,26 +56,21 @@ services:
     env_file:
       - .env
     volumes:
-      - ./scripts/:/scripts
-      - ./assets/:/assets
-      - ${OP_GETH_DATADIR:-/dbk/op-geth}:/op-geth
-      - ${OP_NODE_DATADIR:-/dbk/op-node}:/op-node
+      - ${OP_NODE_DATADIR:-/dbk}:/dbk
     ports:
       - ${PORT__OP_NODE_HTTP:-8547}:8547
       - ${PORT__OP_NODE_P2P:-9222}:9222
       - ${PORT__OP_NODE_METRIC_PORT:-7300}:7300
     command:
       - op-node
-        #- --l1=http://dbk.trace.geth.blockchain
-        #- --l1=https://rpc.ankr.com/eth_goerli
-      - --l1=https://goerli.blockpi.network/v1/rpc/public
+      - --l1=http://trace.seth.blockchain
       - --l1.trustrpc=true
       - --l2=http://op-geth:8551
-      - --l2.jwt-secret=/op-geth/jwt.txt
+      - --l2.jwt-secret=/dbk/jwt.txt
       - --sequencer.enabled
       - --sequencer.l1-confs=3
       - --verifier.l1-confs=3
-      - --rollup.config=/assets/rollup.json
+      - --rollup.config=/dbk/rollup.json
       - --rpc.addr=0.0.0.0
       - --rpc.port=8547
       - --rpc.enable-admin
@@ -86,4 +78,4 @@ services:
       - --p2p.sequencer.key=$SEQUENCER_KEY
       - --p2p.advertise.ip=$P2P_ADVERTISE_IP
       - --p2p.sync.req-resp
-      - --p2p.priv.path=/op-node/opnode_p2p_priv.txt
+      - --p2p.priv.path=/dbk/opnode_p2p_priv.txt
