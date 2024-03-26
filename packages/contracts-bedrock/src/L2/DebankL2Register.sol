@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.15;
 
-import { Semver } from "../universal/Semver.sol";
+import { ISemver } from "../universal/ISemver.sol";
 
 /**
  * @title DebankL2Register
  */
 
-contract DebankL2Register is Semver {
+contract DebankL2Register is ISemver {
     /// @notice Address of the admin of this contract.
     address public owner;
 
@@ -30,9 +30,7 @@ contract DebankL2Register is Semver {
     /// @param newOwner Address of the new owner.
     event OwnerChanged(address oldOwner, address newOwner);
 
-    /// @custom:semver 1.0.1
-    /// @notice Constructs the DebankL2Register contract.
-    constructor() Semver(1, 0, 1) {}
+    string public constant version = '1.0.0';
 
     /// @notice Registers an l2 account for the caller.
     /// @param l2Account l2 Address of the user.
